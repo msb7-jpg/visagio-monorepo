@@ -1,0 +1,33 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Data lake layers (arquivos Parquet gerados pelo pipeline — não versionados)
+data/landing/
+data/bronze/
+data/silver/
+data/gold/
+
+# Spark event logs
+spark-warehouse/
+derby.log
+metastore_db/
+
+example-caminha/
+example-visagio/
+
+# Environment variables
+.env
+.env.*
+!.env.example
