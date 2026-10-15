@@ -1,0 +1,108 @@
+[project]
+name = "visagio-atividade-genai-2026-backend"
+version = "1.0.0"
+description = "CineData Analytics Backend & Agent Service"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "pydantic-settings>=2.5.0",
+    "python-dotenv>=1.0.1",
+    "langchain>=1.4.3",
+    "langchain-core>=1.6.6",
+    "langchain-openai>=1.3.3",
+    "langchain-google-genai>=4.4.0",
+    "langchain-huggingface>=1.2.2",
+    "langgraph>=1.2.12",
+    "langgraph-checkpoint-sqlite>=3.1.1",
+    "sentence-transformers>=3.0.0",
+    "sse-starlette>=2.1.0",
+    "sqlparse>=0.5.0",
+    "aiosqlite>=0.20.0",
+    "sqlalchemy>=2.0.35",
+    "langchain-groq>=1.1.3",
+    "sqlite-vec>=0.1.9",
+    "numpy>=2.5.3",
+    "cryptography>=50.0.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "httpx>=0.27.0",
+    "ruff>=0.7.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+preview = true
+line-length = 120
+target-version = "py312"
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle Error (estilo padrão)
+    "F",    # Pyflakes (erros lógicos, variáveis não usadas)
+    "I",    # isort (organização limpa de imports)
+    "UP",   # pyupgrade (força sintaxe moderna do Python)
+    "B",    # flake8-bugbear (previne bugs de lógica e anti-padrões comuns)
+    "SIM",  # flake8-simplify (sugere simplificações de código)
+    "complex-structure", # mccabe (Complexidade Ciclomática - a que você já queria)
+    "PTH", # Suggests using pathlib instead of os.path (mais moderno e seguro)
+    "TC",   # flake8-type-checking (previne importações desnecessárias de tipos)
+    "N",    # pep8-naming (garante padrões estritos de nomenclatura)
+    "C4",   # flake8-comprehensions (otimiza list/dict comprehensions)
+    "FA",   # flake8-future-annotations (melhora performanceSIM de type hinting)
+    "ISC",  # flake8-implicit-str-concat (evita bugs com strings implicitamente unidas)
+    "PIE",  # flake8-pie (regras gerais de qualidade e refinamento de código)
+    "PT",   # flake8-pytest-style (padroniza testes robustos e eficientes)
+    "RSE",  # flake8-raise (evita parênteses desnecessários em exceções)
+    "RET",  # flake8-return (força retornos lógicos mais limpos e legíveis)
+    "SLF",  # flake8-self (bloqueia acessos indevidos a métodos privados de outras classes)
+    "T20",  # flake8-print (proíbe `print` soltos no backend - exige logging correto)
+    "PERF", # Perflint (regras focadas estritamente em performance backend)
+    "FURB", # refurb (moderniza e refatora código antigo/ineficiente)
+    "RUF",  # Regras nativas do próprio Ruff (erros específicos e profundos de Python)
+    "ASYNC",# flake8-async (previne bugs clássicos em corotinas/código assíncrono)
+    "S",    # flake8-bandit (análise de vulnerabilidades de segurança - ex: SQLi, Hardcoded secrets)
+    "ambiguous-variable-name",
+]
+
+# Regras que você quer ignorar deliberadamente (evita alertas irritantes)
+ignore = [
+    "assert", # Permite usar `assert` (essencial para testes no pytest)
+    "yield-in-context-manager-in-async-generator", # Yield dentro de context manager em gerador assíncrono (necessário para streaming SSE)
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path"]
+
+[tool.ruff.lint.flake8-type-checking]
+runtime-evaluated-base-classes = ["pydantic.BaseModel", "sqlalchemy.orm.DeclarativeBase", "fastapi.Depends"]
+
+[dependency-groups]
+dev = [
+    "pyright>=1.1.414",
+]
+
+[tool.pyright]
+include = ["app"] # Substitua pelo nome da pasta do seu código fonte
+typeCheckingMode = "standard"
+useLibraryCodeForTypes = true
+reportMissingTypeStubs = false # Evita alertas chatos de libs sem tipagem
